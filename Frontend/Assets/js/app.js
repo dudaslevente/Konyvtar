@@ -1,5 +1,5 @@
 const AppTitle = "Fifty shades of chicken";
-const Author = "13.a SZOFT";
+const Author = "13.a SZOFT | Dudás & Kővágó ";
 const Company = "Bajai SZC Türr István Technikum";
 
 const serverUrl = 'http://localhost:3000';
