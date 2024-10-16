@@ -1,17 +1,59 @@
-function updateBook(){
-    let data = {
-        name: document.querySelector('#name').value,
-        email: document.querySelector('#kiad').value,
-        phone: document.querySelector('#isbn').value,
-        role: document.querySelector('#szerzok').value
-    }
+var xhr = new XMLHttpRequest();
+let index = 1;
 
-    
-    
-    
+function LoadBooks(){
+    let tbody = document.querySelector('tbody');
+    tbody.innerHTML = '';
+    xhr.open('GET', 'http://localhost:3000/books', true);
+    xhr.send();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var items = JSON.parse(xhr.responseText);
+        
+            items.forEach(item => {
+                let tr = document.createElement('tr');
+                let td1 = document.createElement('td');
+                let td2 = document.createElement('td');
+                let td3 = document.createElement('td');
+                td3.classList.add('text-end');
+                let td4 = document.createElement('td');
+                td4.classList.add('text-end');
+                let td5 = document.createElement('td');
+                let td6 = document.createElement('td');
+
+                td1.innerHTML = (index ++) + '.';
+                td2.innerHTML = item.cim;
+                td3.innerHTML = item.kiadas_ev;
+                td4.innerHTML = item.ISBM;
+                td5.innerHTML = item.szerzo;
+
+                let updateBtn = document.createElement('button');
+                updateBtn.classList.add('btn', 'btn-warning');
+                updateBtn.textContent = 'Módosítás';
+                updateBtn.addEventListener('click', function() {
+                    saveChanges(item.ID, updateBtn);
+                });
+                td6.appendChild(updateBtn);
+ 
+                let deleteBtn = document.createElement('button');
+                deleteBtn.classList.add('btn', 'btn-danger');
+                deleteBtn.textContent = 'Törlés';
+                deleteBtn.addEventListener('click', function() {
+                    deleteItem(item.ID);
+                });
+                td6.appendChild(deleteBtn);
+               
+                tbody.appendChild(tr);
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+                tr.appendChild(td3);
+                tr.appendChild(td4);
+                tr.appendChild(td5);
+                tr.appendChild(td6);
+            });
+        }
+    };
 }
-
-
 
 
 function updateUser(id){
@@ -90,3 +132,5 @@ function renderUsers(users){
     total.innerHTML = users.length;
 }
 }*/
+
+setTimeout(()=>{LoadBooks()}, 1000);

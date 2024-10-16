@@ -15,3 +15,10 @@ async function render(view){
 
     switch(view){}
 }
+
+if (localStorage.getItem('konyvtar')){
+    loggedUser = JSON.parse(localStorage.getItem('konyvtar'));
+    render('books');
+}else{
+    render('books');
+}
