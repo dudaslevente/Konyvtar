@@ -1,13 +1,3 @@
-
-function getMe(){
-    axios.get(`${serverUrl}/me/${loggedUser[0].ID}`, authorize()).then(res => {
-        document.querySelector('#name').value = res.data[0].name;
-        document.querySelector('#email').value = res.data[0].email;
-        document.querySelector('#phone').value = res.data[0].phone;
-        document.querySelector('#role').value = res.data[0].role;
-    });
-}
-
 function updateBook(){
     let data = {
         name: document.querySelector('#name').value,
@@ -99,28 +89,4 @@ function renderUsers(users){
     let total = document.querySelector('strong');
     total.innerHTML = users.length;
 }
-
-function getStatistics(){
-    
-}
-
-
-
-function updatePassword(){
-    
-    let data = {
-        oldpass: document.querySelector('#oldpass').value,
-        newpass: document.querySelector('#newpass').value,
-        confirm: document.querySelector('#confirm').value
-    }
-
-    axios.patch(`${serverUrl}/password/${loggedUser[0].ID}`, data).then(res => {
-        alert(res.data);
-
-        if (res.status == 200){
-            document.querySelector('#oldpass').value = "";
-            document.querySelector('#newpass').value = "";
-            document.querySelector('#confirm').value = "";
-        }
-    });
 }*/
