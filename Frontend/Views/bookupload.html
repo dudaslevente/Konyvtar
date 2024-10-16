@@ -1,0 +1,31 @@
+<div class="p-3">
+    <h3>Könyv Feltöltése</h3>
+    <hr>
+    <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="name" placeholder="Name">
+        <label for="name">Name</label>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="email" class="form-control" id="kiad" placeholder="year">
+        <label for="email">Kiadási Év</label>
+    </div>
+    
+    <form class="row">
+        <div class="form-floating col-md-6">
+            <input type="text" class="form-control" id="isbn"   placeholder="ISBN">
+            <label for="time" style="margin-left: 10px; ">ISBN szám</label>
+            
+        </div>
+     
+        <div class="btn-group col-md-6">  
+            <select class="form-select" id="catID" aria-label="Default select example" style="height: 60px; ">
+                <option value="1">Előétel</option>
+                <option value="2">Főétel</option>
+                <option value="3">Deszert</option>
+            </select>
+        </div>
+    </form>
+    
+    <br>
+    <button class="btn btn-primary mb-3" onclick="uploadBook()">Felvétel</button>
+</div>

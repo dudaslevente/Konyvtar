@@ -1,6 +1,6 @@
 require('dotenv').config();
 const express = require('express');
-var ejs = require('ejs');
+//var ejs = require('ejs');
 const app = express();
 const port = process.env.PORT;
 
