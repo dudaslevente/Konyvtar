@@ -23,7 +23,7 @@ function LoadBooks() {
                 td2.innerHTML = item.cim;  // Módosítva: "title"
                 td3.innerHTML = item.kiadas_ev;  // Módosítva: "publication_year"
                 td4.innerHTML = item.ISBM;  // Módosítva: "isbn"
-
+                td5.innerHTML =item.authors; 	
                 // Módosítás gomb
                 let updateBtn = document.createElement('button');
                 updateBtn.classList.add('btn', 'btn-warning');
@@ -58,14 +58,13 @@ function LoadBooks() {
 
 // Könyv feltöltése
 function uploadBook() {
-    // Adatok összegyűjtése az űrlapból
     let data = {
         title: document.querySelector('#name').value, // A könyv címe
         publication_year: document.querySelector('#kiad').value, // Kiadás éve
         isbn: document.querySelector('#isbn').value, // ISBN szám
         authorID: document.querySelector('#authorID').value // Kiválasztott szerző ID
     };
-
+    loadAuthors();
     // AJAX kérés az új könyv feltöltéséhez
     var xhrUpload = new XMLHttpRequest();
     xhrUpload.open('POST', 'http://localhost:3000/books', true);
@@ -91,6 +90,8 @@ function loadAuthors() {
         if (xhr.readyState === 4 && xhr.status === 200) {
             var authors = JSON.parse(xhr.responseText);
             var authorSelect = document.getElementById('authorID');
+            authorSelect.innerHTML = '<option value="">Válassz egy szerzőt</option>'; // Kiürítjük a listát
+
             authors.forEach(function(author) {
                 var option = document.createElement('option');
                 option.value = author.ID; // Szerző ID-ja
@@ -102,10 +103,8 @@ function loadAuthors() {
     xhr.send();
 }
 
-// Indítás
-window.onload = function() {
-    loadAuthors(); // Szerzők betöltése
-};
+
+
 
 // Szerző feltöltése
 function uploadUser() {
