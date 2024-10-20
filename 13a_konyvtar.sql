@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2024. Okt 16. 08:34
+-- Létrehozás ideje: 2024. Okt 20. 14:06
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Adatbázis: `13a_konytar`
+-- Adatbázis: `13a_konyvtar`
 --
 
 -- --------------------------------------------------------
@@ -33,6 +33,13 @@ CREATE TABLE `authors` (
   `szul_datum` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
+--
+-- A tábla adatainak kiíratása `authors`
+--
+
+INSERT INTO `authors` (`ID`, `name`, `szul_datum`) VALUES
+(1, 'Kővágó Levente', '2005-06-30');
+
 -- --------------------------------------------------------
 
 --
@@ -43,8 +50,16 @@ CREATE TABLE `books` (
   `ID` int(11) NOT NULL,
   `cim` varchar(100) NOT NULL,
   `kiadas_ev` int(4) NOT NULL,
-  `ISBM` varchar(13) NOT NULL
+  `ISBM` varchar(13) NOT NULL,
+  `authors` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `books`
+--
+
+INSERT INTO `books` (`ID`, `cim`, `kiadas_ev`, `ISBM`, `authors`) VALUES
+(1, 'Kiskacsa', 2023, '978-4-7216-18', 'Kővágó Levente');
 
 -- --------------------------------------------------------
 
@@ -57,6 +72,13 @@ CREATE TABLE `book_authors` (
   `booksID` int(11) NOT NULL,
   `authorsID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `book_authors`
+--
+
+INSERT INTO `book_authors` (`ID`, `booksID`, `authorsID`) VALUES
+(1, 1, 1);
 
 --
 -- Indexek a kiírt táblákhoz
@@ -90,19 +112,19 @@ ALTER TABLE `book_authors`
 -- AUTO_INCREMENT a táblához `authors`
 --
 ALTER TABLE `authors`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT a táblához `books`
 --
 ALTER TABLE `books`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT a táblához `book_authors`
 --
 ALTER TABLE `book_authors`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Megkötések a kiírt táblákhoz
