@@ -28,22 +28,35 @@ app.get('/books', (req, res) => {
 });
 
 app.post('/books', (req, res) => {
+  console.log(req.body); // Kiírja a beérkező adatokat a konzolra
+
+  // Kötelező adatok ellenőrzése
   if (!req.body.title || !req.body.publication_year || !req.body.isbn || !req.body.authorID) {
-      res.status(400).send('Nem adtál meg minden kötelező adatot!');
-      return;
+      return res.status(400).send('Nem adtál meg minden kötelező adatot!'); // 400 - Bad Request
   }
 
-  pool.query(`INSERT INTO books (title, publication_year, isbn, authorID) VALUES (?, ?, ?, ?)`, 
+  // Könyv hozzáadása az adatbázishoz
+  pool.query(`INSERT INTO books (cim, kiadas_ev, ISBM, authors) VALUES (?, ?, ?, ?)`, 
              [req.body.title, req.body.publication_year, req.body.isbn, req.body.authorID], 
              (err, results) => {
       if (err) {
-          res.status(500).send('Hiba történt az adatbázis lekérés közben!');
-          return;
+          console.error('Hiba az adatbázis lekérés közben:', err); // Hiba részletezése a konzolon
+          return res.status(500).send('Hiba történt az adatbázis lekérés közben!'); // 500 - Internal Server Error
       }
-      res.status(200).send(results);
-      return;
+
+      // Visszaadja a hozzáadott könyv adatait
+      const newBook = {
+          id: results.insertId, // A könyv ID-ja, amit az adatbázis generált
+          title: req.body.title,
+          publication_year: req.body.publication_year,
+          isbn: req.body.isbn,
+          authorID: req.body.authorID // Szerző azonosító
+      };
+      res.status(201).json(newBook); // 201 - Created
   });
 });
+
+
 
 
 app.patch('/books/:ID', (req, res) => {

@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 500); // 500 ms = fél másodperc
 });
 
+
+
 function LoadBooks() {
     index = 1; // nullázás
     let tbody = document.querySelector('tbody');
@@ -81,17 +83,12 @@ function LoadBooks() {
         }
     };
 }
-
-
-
-
-// Könyv feltöltése
 function uploadBook() {
     const data = {
         title: document.querySelector('#name').value,
         publication_year: document.querySelector('#kiad').value,
         isbn: document.querySelector('#isbn').value,
-        authorID: document.querySelector('#authorID').value // Kiválasztott szerző ID
+        authorID: document.querySelector('#authorID').value // A kiválasztott szerző azonosítója
     };
 
     const xhrUpload = new XMLHttpRequest();
@@ -100,8 +97,13 @@ function uploadBook() {
 
     xhrUpload.onreadystatechange = function () {
         if (xhrUpload.readyState === 4) {
-            if (xhrUpload.status === 200) {
-                alert('Könyv feltöltve!');
+            if (xhrUpload.status === 201) {
+                const newBook = JSON.parse(xhrUpload.responseText);
+                // Keresd meg a kiválasztott szerző nevét a legördülő menüből
+                const authorSelect = document.querySelector('#authorID');
+                const selectedAuthorName = authorSelect.options[authorSelect.selectedIndex].text;
+
+                alert(`Könyv feltöltve! Szerző: ${selectedAuthorName}`);
                 LoadBooks(); // Könyvek frissítése
             } else {
                 alert('Hiba történt a könyv feltöltésekor.');
@@ -111,6 +113,8 @@ function uploadBook() {
 
     xhrUpload.send(JSON.stringify(data));
 }
+
+
 
 
 let authorIndex = 1; // Globális index a szerzők nyilvántartásához
@@ -170,28 +174,6 @@ function LoadAuthors() {
         }
     };
 }
-function loadAuthors() {
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', `${serverUrl}/authors`, true); // Az API URL
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            var authors = JSON.parse(xhr.responseText);
-            var authorSelect = document.getElementById('authorID');
-            authorSelect.innerHTML = '<option value="">Válassz egy szerzőt</option>'; // Kiürítjük a listát
-
-            authors.forEach(function(author) {
-                var option = document.createElement('option');
-                option.value = author.id; // Szerző ID-ja (az API-tól)
-                option.textContent = author.name; // Szerző neve (az API-tól)
-                authorSelect.appendChild(option);
-            });
-        }
-    };
-    xhr.send();
-}
-
-// Hívja meg a loadAuthors() funkciót a könyv feltöltésekor
-document.addEventListener('DOMContentLoaded', loadAuthors);
 
 function formatDate(isoString) {
     const date = new Date(isoString); // ISO stringből Date objektum
@@ -201,38 +183,40 @@ function formatDate(isoString) {
 // Indítás
 setTimeout(() => {
     LoadAuthors(); // Szerzők betöltése
-}, 500);
+},100);
 
 
 
 
-// Szerző feltöltése
-function uploadUser() {
-    // Adatok összegyűjtése az űrlapból
-    let data = {
-        name: document.querySelector('#authorName').value, // Szerző neve
-        szul_datum: document.querySelector('#birthDate').value // Születési dátum
-    };
+function loadAuthorsToSelect() {
+    const authorSelect = document.getElementById('authorID');
+    authorSelect.innerHTML = '<option value="">Szerzők...</option>'; // Kezdeti opció
 
-    // AJAX kérés az új szerző feltöltéséhez
-    var xhrUpload = new XMLHttpRequest();
-    xhrUpload.open('POST', 'http://localhost:3000/authors', true); // Az API URL-je
-    xhrUpload.setRequestHeader('Content-Type', 'application/json');
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'http://localhost:3000/authors', true); // Az API URL-je
+    xhr.send();
 
-    xhrUpload.onreadystatechange = function () {
-        if (xhrUpload.readyState === 4) {
-            if (xhrUpload.status === 200) {
-                alert('Szerző feltöltve!');
-                // További lépések, például a könyvek frissítése
-                // LoadBooks(); // Ha szükséges
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                var authors = JSON.parse(xhr.responseText);
+                authors.forEach(author => {
+                    var option = document.createElement('option');
+                    option.value = author.ID; // Szerző ID-ja
+                    option.textContent = author.name; // Szerző neve
+                    authorSelect.appendChild(option);
+                });
             } else {
-                alert('Hiba történt a szerző feltöltésekor.');
+                console.error('Hiba történt a szerzők lekérdezése során:', xhr.statusText);
             }
         }
     };
-    
-    xhrUpload.send(JSON.stringify(data));
 }
+
+
+
+
+
 
 // Indítás
 setTimeout(() => {

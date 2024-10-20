@@ -35,6 +35,7 @@ async function render(view) {
             break;
         case 'bookupload':
             // Könyv feltöltési űrlap kezelése
+            loadAuthorsToSelect();
             // Például: 
             // document.querySelector('form').addEventListener('submit', uploadBook);
             break;
