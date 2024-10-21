@@ -65,12 +65,12 @@ app.patch('/books/:ID', (req, res) => {
         return;
     }
 
-    if (!req.body.title || !req.body.publication_year || !req.body.isbn || !req.body.authorID){
+    if (!req.body.cim || !req.body.kiadas_ev || !req.body.ISBM || !req.body.authors){
         res.status(203).send('Nem adtál meg minden kötelező adatot!');
         return;
     }
 
-    pool.query(`UPDATE books SET title=${req.body.title}, publication_year=${req.body.publication_year}, isbn=${req.body.isbn}, authorID=${req.body.authorID} WHERE ID='${req.params.ID}'`, (err, results) => {
+    pool.query(`UPDATE books SET cim='${req.body.cim}', kiadas_ev=${req.body.kiadas_ev}, ISBM='${req.body.ISBM}', authors='${req.body.authors}' WHERE ID='${req.params.ID}'`, (err, results) => {
         if (err){
           res.status(500).send('Hiba történt az adatbázis művelet közben!');
           return;
@@ -135,6 +135,33 @@ app.post('/authors', (req, res) => {
       }
       res.status(201).json({ message: 'Szerző sikeresen mentve!', author: { name, szul_datum } });
   });
+});
+
+app.patch('/authors/:ID', (req, res) => {
+  if (!req.params.ID) {
+      res.status(203).send('Hiányzó azonosító!');
+      return;
+  }
+
+  if (!req.body.name || !req.body.szul_datum){
+      res.status(203).send('Nem adtál meg minden kötelező adatot!');
+      return;
+  }
+
+  pool.query(`UPDATE authors SET name='${req.body.name}', szul_datum='${req.body.szul_datum}' WHERE ID='${req.params.ID}'`, (err, results) => {
+      if (err){
+        res.status(500).send('Hiba történt az adatbázis művelet közben!');
+        return;
+      }
+  
+      if (results.affectedRows == 0){
+        res.status(203).send('Nincs ilyen adat!');
+        return;
+      }
+  
+      res.status(200).send('A szerző adatai módosítva!');
+      return;
+    });
 });
 
 app.delete('/authors/:ID', (req, res) => {
