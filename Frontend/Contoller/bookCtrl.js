@@ -113,8 +113,33 @@ function uploadBook() {
 
     xhrUpload.send(JSON.stringify(data));
 }
+// Szerző feltöltése
+function uploadUser() {
+    // Adatok összegyűjtése az űrlapból
+    let data = {
+        name: document.querySelector('#authorName').value, // Szerző neve
+        szul_datum: document.querySelector('#birthDate').value // Születési dátum
+    };
 
-
+    // AJAX kérés az új szerző feltöltéséhez
+    var xhrUpload = new XMLHttpRequest();
+    xhrUpload.open('POST', 'http://localhost:3000/authors', true); // Az API URL-je
+    xhrUpload.setRequestHeader('Content-Type', 'application/json');
+    
+    xhrUpload.onreadystatechange = function () {
+        if (xhrUpload.readyState === 4) {
+            if (xhrUpload.status === 201) {
+                alert('Szerző feltöltve!');
+                
+          } else {
+                alert('Hiba történt a szerző feltöltésekor.');
+               
+            }
+        }
+    };
+    
+    xhrUpload.send(JSON.stringify(data));
+}
 
 
 let authorIndex = 1; // Globális index a szerzők nyilvántartásához
