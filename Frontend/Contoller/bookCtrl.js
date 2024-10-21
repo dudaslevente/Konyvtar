@@ -227,7 +227,7 @@ function loadAuthorsToSelect() {
                 var authors = JSON.parse(xhr.responseText);
                 authors.forEach(author => {
                     var option = document.createElement('option');
-                    option.value = author.ID; // Szerző ID-ja
+                    option.value = author.name; // Szerző ID-ja
                     option.textContent = author.name; // Szerző neve
                     authorSelect.appendChild(option);
                 });
