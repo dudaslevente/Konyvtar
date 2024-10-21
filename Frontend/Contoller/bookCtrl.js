@@ -54,7 +54,7 @@ function LoadBooks() {
                 updateBtn.classList.add('btn', 'btn-warning');
                 updateBtn.textContent = 'Módosítás';
                 updateBtn.addEventListener('click', function () {
-                    saveChanges(item.id, updateBtn);
+                    saveChanges(item.ID, updateBtn);
                 });
                 td6.appendChild(updateBtn);
 
@@ -63,7 +63,7 @@ function LoadBooks() {
                 deleteBtn.classList.add('btn', 'btn-danger');
                 deleteBtn.textContent = 'Törlés';
                 deleteBtn.addEventListener('click', function () {
-                    deleteItem(item.id);
+                    deleteItem(item.ID);
                 });
                 td6.appendChild(deleteBtn);
                 
@@ -83,6 +83,49 @@ function LoadBooks() {
         }
     };
 }
+
+function saveChanges(ID, updateBtn) {
+    var updatedData = JSON.stringify({
+        name: document.querySelector(`#name${ID}`).value,
+        kiad: document.querySelector(`#kiad${ID}`).value,
+        isbn: document.querySelector(`#isbn${ID}`).value,
+        szerzok: document.querySelector(`#szerzok${ID}`).value,
+    });
+ 
+    xhr.open('PATCH', `http://localhost:3000/books/${ID}`, true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.send(updatedData);
+ 
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                alert('Sikeres frissítés');
+                LoadBooks();
+            } else {
+                alert('Frissítés nem sikerült: ' + xhr.responseText);
+            }
+        }
+    };
+    updateBtn.textContent = 'Módosítás';
+}
+
+function deleteItem(ID) {
+    if (confirm('Biztosan törölni szeretnéd ezt a terméket?')) {
+        xhr.open('DELETE', `http://localhost:3000/books/${ID}`, true);
+        xhr.send();
+ 
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    LoadBooks();
+                } else {
+                    alert('Törlés nem sikerült: ' + xhr.responseText);
+                }
+            }
+        };
+    }
+}
+
 function uploadBook() {
     const data = {
         title: document.querySelector('#name').value,
@@ -172,7 +215,7 @@ function LoadAuthors() {
                 updateBtn.classList.add('btn', 'btn-warning');
                 updateBtn.textContent = 'Módosítás';
                 updateBtn.addEventListener('click', function () {
-                    saveChanges(author.id, updateBtn);
+                    saveChanges(author.ID, updateBtn);
                 });
                 td4.appendChild(updateBtn);
 
@@ -181,7 +224,7 @@ function LoadAuthors() {
                 deleteBtn.classList.add('btn', 'btn-danger');
                 deleteBtn.textContent = 'Törlés';
                 deleteBtn.addEventListener('click', function () {
-                    deleteAuthor(author.id);
+                    deleteAuthor(author.ID);
                 });
                 td4.appendChild(deleteBtn);
                 
@@ -198,6 +241,23 @@ function LoadAuthors() {
             document.querySelector('tfoot strong').textContent = authors.length;
         }
     };
+}
+
+function deleteAuthor(ID) {
+    if (confirm('Biztosan törölni szeretnéd ezt a terméket?')) {
+        xhr.open('DELETE', `http://localhost:3000/authors/${ID}`, true);
+        xhr.send();
+ 
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    LoadAuthors();
+                } else {
+                    alert('Törlés nem sikerült: ' + xhr.responseText);
+                }
+            }
+        };
+    }
 }
 
 function formatDate(isoString) {

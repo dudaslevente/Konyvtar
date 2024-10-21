@@ -137,6 +137,28 @@ app.post('/authors', (req, res) => {
   });
 });
 
+app.delete('/authors/:ID', (req, res) => {
+  if (!req.params.ID) {
+      res.status(203).send('Hiányzó azonosító!');
+      return;
+  }
+
+  pool.query(`DELETE FROM authors WHERE ID='${req.params.ID}'`, (err, results) => {
+      if (err){
+        res.status(500).send('Hiba történt az adatbázis művelet közben!');
+        return;
+      }
+  
+      if (results.affectedRows == 0){
+        res.status(203).send('Nincs ilyen adat!');
+        return;
+      }
+  
+      res.status(200).send(`A könyv törölve!`);
+      return;
+    });   
+});
+
 app.listen(port, ()=>{
     console.log(`Server listening on port ${port}...`);
 });

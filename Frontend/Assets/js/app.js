@@ -51,3 +51,9 @@ async function render(view) {
 }
 
 
+if (localStorage.getItem('konyvtar')){
+    loggedUser = JSON.parse(localStorage.getItem('konyvtar'));
+    render('books');
+}else{
+    render('books');
+}
