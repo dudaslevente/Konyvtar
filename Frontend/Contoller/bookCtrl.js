@@ -54,6 +54,7 @@ function LoadBooks() {
                 updateBtn.classList.add('btn', 'btn-warning');
                 updateBtn.textContent = 'Módosítás';
                 updateBtn.addEventListener('click', function () {
+                    render('bookupdate');
                     saveChanges(item.ID, updateBtn);
                 });
                 td6.appendChild(updateBtn);
@@ -86,10 +87,10 @@ function LoadBooks() {
 
 function saveChanges(ID, updateBtn) {
     var updatedData = JSON.stringify({
-        name: document.querySelector(`#name${ID}`).value,
-        kiad: document.querySelector(`#kiad${ID}`).value,
-        isbn: document.querySelector(`#isbn${ID}`).value,
-        szerzok: document.querySelector(`#szerzok${ID}`).value,
+        cim: document.querySelector(`#cim`),
+        kiadas_ev: document.querySelector(`#kiadas_ev`),
+        ISBM: document.querySelector(`#ISBM`),
+        authors: document.querySelector(`#authors`),
     });
  
     xhr.open('PATCH', `http://localhost:3000/books/${ID}`, true);
@@ -106,7 +107,6 @@ function saveChanges(ID, updateBtn) {
             }
         }
     };
-    updateBtn.textContent = 'Módosítás';
 }
 
 function deleteItem(ID) {

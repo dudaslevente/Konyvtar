@@ -39,6 +39,11 @@ async function render(view) {
             // Például: 
             // document.querySelector('form').addEventListener('submit', uploadBook);
             break;
+        case 'bookupdate':
+            // Szerző feltöltési űrlap kezelése
+            // Például: 
+            // document.querySelector('form').addEventListener('submit', uploadUser);
+            break;
         case 'userupload':
             // Szerző feltöltési űrlap kezelése
             // Például: 

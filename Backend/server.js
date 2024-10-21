@@ -65,12 +65,12 @@ app.patch('/books/:ID', (req, res) => {
         return;
     }
 
-    if (!req.body.cim || !req.body.kiadas_ev || !req.body.ISBM){
+    if (!req.body.title || !req.body.publication_year || !req.body.isbn || !req.body.authorID){
         res.status(203).send('Nem adtál meg minden kötelező adatot!');
         return;
     }
 
-    pool.query(`UPDATE books SET cim=${req.body.cim}, kiadas_ev=${req.body.kiadas_ev}, ISBM=${req.body.ISBM} WHERE ID='${req.params.ID}'`, (err, results) => {
+    pool.query(`UPDATE books SET title=${req.body.title}, publication_year=${req.body.publication_year}, isbn=${req.body.isbn}, authorID=${req.body.authorID} WHERE ID='${req.params.ID}'`, (err, results) => {
         if (err){
           res.status(500).send('Hiba történt az adatbázis művelet közben!');
           return;
