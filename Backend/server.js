@@ -36,7 +36,7 @@ app.post('/books', (req, res) => {
   }
 
   // Könyv hozzáadása az adatbázishoz
-  pool.query(`INSERT INTO books (cim, kiadas_ev, ISBM, authors) VALUES (?, ?, ?, ?)`, 
+  pool.query(`INSERT INTO books (cim, kiadas_ev, ISBM, author) VALUES (?, ?, ?, ?)`, 
              [req.body.title, req.body.publication_year, req.body.isbn, req.body.authorID], 
              (err, results) => {
       if (err) {
@@ -65,12 +65,12 @@ app.patch('/books/:ID', (req, res) => {
         return;
     }
 
-    if (!req.body.cim || !req.body.kiadas_ev || !req.body.ISBM || !req.body.authors){
+    if (!req.body.cim || !req.body.kiadas_ev || !req.body.ISBM || !req.body.author){
         res.status(203).send('Nem adtál meg minden kötelező adatot!');
         return;
     }
 
-    pool.query(`UPDATE books SET cim='${req.body.cim}', kiadas_ev=${req.body.kiadas_ev}, ISBM='${req.body.ISBM}', authors='${req.body.authors}' WHERE ID='${req.params.ID}'`, (err, results) => {
+    pool.query(`UPDATE books SET cim='${req.body.cim}', kiadas_ev=${req.body.kiadas_ev}, ISBM='${req.body.ISBM}', author='${req.body.author}' WHERE ID='${req.params.ID}'`, (err, results) => {
         if (err){
           res.status(500).send('Hiba történt az adatbázis művelet közben!');
           return;
@@ -120,20 +120,20 @@ app.get('/authors', (req, res) => {
 
 // Szerzők feltöltése
 app.post('/authors', (req, res) => {
-  const { name, szul_datum } = req.body;
+  const { author, szul_datum } = req.body;
 
   // Egyszerű ellenőrzés
-  if (!name || !szul_datum) {
+  if (!author || !szul_datum) {
       return res.status(400).json({ error: 'Név és születési dátum kötelező!' });
   }
 
   // Adatok mentése az adatbázisba
-  pool.query(`INSERT INTO authors (name, szul_datum) VALUES (?, ?)`, [name, szul_datum], (err, results) => {
+  pool.query(`INSERT INTO authors (author, szul_datum) VALUES (?, ?)`, [author, szul_datum], (err, results) => {
       if (err) {
           console.error(err); // Hiba naplózása
           return res.status(500).json({ error: 'Hiba történt a szerző mentésekor.' });
       }
-      res.status(201).json({ message: 'Szerző sikeresen mentve!', author: { name, szul_datum } });
+      res.status(201).json({ message: 'Szerző sikeresen mentve!', author: { author, szul_datum } });
   });
 });
 
@@ -143,12 +143,12 @@ app.patch('/authors/:ID', (req, res) => {
       return;
   }
 
-  if (!req.body.name || !req.body.szul_datum){
+  if (!req.body.author){
       res.status(203).send('Nem adtál meg minden kötelező adatot!');
       return;
   }
 
-  pool.query(`UPDATE authors SET name='${req.body.name}', szul_datum='${req.body.szul_datum}' WHERE ID='${req.params.ID}'`, (err, results) => {
+  pool.query(`UPDATE authors SET author='${req.body.author}' WHERE ID='${req.params.ID}'`, (err, results) => {
       if (err){
         res.status(500).send('Hiba történt az adatbázis művelet közben!');
         return;

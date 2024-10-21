@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2024. Okt 20. 14:06
--- Kiszolgáló verziója: 10.4.32-MariaDB
--- PHP verzió: 8.2.12
+-- Létrehozás ideje: 2024. Okt 21. 19:29
+-- Kiszolgáló verziója: 10.4.24-MariaDB
+-- PHP verzió: 7.4.29
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,7 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `authors` (
   `ID` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
+  `author` varchar(100) COLLATE utf8_hungarian_ci NOT NULL,
   `szul_datum` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
@@ -37,8 +37,10 @@ CREATE TABLE `authors` (
 -- A tábla adatainak kiíratása `authors`
 --
 
-INSERT INTO `authors` (`ID`, `name`, `szul_datum`) VALUES
-(1, 'Kővágó Levente', '2005-06-30');
+INSERT INTO `authors` (`ID`, `author`, `szul_datum`) VALUES
+(1, 'Kővágó Levente', '2005-06-30'),
+(3, 'Dudás Leventek', '2005-12-09'),
+(5, 'Dudás Leventek', '2024-10-24');
 
 -- --------------------------------------------------------
 
@@ -48,18 +50,20 @@ INSERT INTO `authors` (`ID`, `name`, `szul_datum`) VALUES
 
 CREATE TABLE `books` (
   `ID` int(11) NOT NULL,
-  `cim` varchar(100) NOT NULL,
+  `cim` varchar(100) COLLATE utf8_hungarian_ci NOT NULL,
   `kiadas_ev` int(4) NOT NULL,
-  `ISBM` varchar(13) NOT NULL,
-  `authors` text NOT NULL
+  `ISBM` varchar(13) COLLATE utf8_hungarian_ci NOT NULL,
+  `author` text COLLATE utf8_hungarian_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `books`
 --
 
-INSERT INTO `books` (`ID`, `cim`, `kiadas_ev`, `ISBM`, `authors`) VALUES
-(1, 'Kiskacsa', 2023, '978-4-7216-18', 'Kővágó Levente');
+INSERT INTO `books` (`ID`, `cim`, `kiadas_ev`, `ISBM`, `author`) VALUES
+(1, 'Kiskacsa', 2023, '978-4-7216-18', 'Kővágó Levente'),
+(4, 'Hellokagegeege', 2022, '7894612832727', 'Levente'),
+(5, 'Levente', 2005, '121643616461', 'Dudás Leventek');
 
 -- --------------------------------------------------------
 
@@ -112,13 +116,13 @@ ALTER TABLE `book_authors`
 -- AUTO_INCREMENT a táblához `authors`
 --
 ALTER TABLE `authors`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT a táblához `books`
 --
 ALTER TABLE `books`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT a táblához `book_authors`
