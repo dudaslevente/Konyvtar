@@ -47,7 +47,8 @@ function LoadBooks() {
                 td2.innerHTML = `<input type='text' value='${item.cim}' id='cim${item.ID}'>`;
                 td3.innerHTML = `<input type='text' value='${item.kiadas_ev}' id='kiadas_ev${item.ID}'>`;
                 td4.innerHTML = `<input type='text' value='${item.ISBM}' id='ISBM${item.ID}'>`;
-                td5.innerHTML = `<input type='text' value='${item.author}' id='author${item.ID}'>`;
+                td5.innerHTML = `<select type='text' ${function(){loadAuthorsToSelect()}} class="form-select" value='${item.authors}' id='${item.authors}'>`;
+                
 
                 // Módosítás gomb
                 let updateBtn = document.createElement('button');
@@ -91,7 +92,7 @@ function saveChanges(ID) {
         cim: document.querySelector(`#cim${ID}`).value,
         kiadas_ev: document.querySelector(`#kiadas_ev${ID}`).value,
         ISBM: document.querySelector(`#ISBM${ID}`).value,
-        author: document.querySelector(`#author${ID}`).value
+        authors: document.querySelector(`#authors${ID}`).value
     });
 
     xhr.open('PATCH', `http://localhost:3000/books/${ID}`, true);
@@ -218,7 +219,7 @@ function LoadAuthors() {
                 updateBtn.classList.add('btn', 'btn-warning');
                 updateBtn.textContent = 'Módosítás';
                 updateBtn.addEventListener('click', function () {
-                    saveChanges(author.ID, updateBtn);
+                    authorChanges(author.ID, updateBtn);
                 });
                 td4.appendChild(updateBtn);
 
@@ -243,7 +244,7 @@ function LoadAuthors() {
     };
 }
 
-function saveChanges(ID) {
+function authorChanges(ID) {
     var xhr = new XMLHttpRequest();
 
     var updatedData = JSON.stringify({
