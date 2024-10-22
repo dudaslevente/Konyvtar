@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2024. Okt 21. 19:29
+-- Létrehozás ideje: 2024. Okt 22. 20:07
 -- Kiszolgáló verziója: 10.4.24-MariaDB
 -- PHP verzió: 7.4.29
 
@@ -53,14 +53,14 @@ CREATE TABLE `books` (
   `cim` varchar(100) COLLATE utf8_hungarian_ci NOT NULL,
   `kiadas_ev` int(4) NOT NULL,
   `ISBM` varchar(13) COLLATE utf8_hungarian_ci NOT NULL,
-  `author` text COLLATE utf8_hungarian_ci NOT NULL
+  `authors` text COLLATE utf8_hungarian_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `books`
 --
 
-INSERT INTO `books` (`ID`, `cim`, `kiadas_ev`, `ISBM`, `author`) VALUES
+INSERT INTO `books` (`ID`, `cim`, `kiadas_ev`, `ISBM`, `authors`) VALUES
 (1, 'Kiskacsa', 2023, '978-4-7216-18', 'Kővágó Levente'),
 (4, 'Hellokagegeege', 2022, '7894612832727', 'Levente'),
 (5, 'Levente', 2005, '121643616461', 'Dudás Leventek');

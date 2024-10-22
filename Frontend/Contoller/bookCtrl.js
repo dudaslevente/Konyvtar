@@ -47,7 +47,7 @@ function LoadBooks() {
                 td2.innerHTML = `<input type='text' value='${item.cim}' id='cim${item.ID}'>`;
                 td3.innerHTML = `<input type='text' value='${item.kiadas_ev}' id='kiadas_ev${item.ID}'>`;
                 td4.innerHTML = `<input type='text' value='${item.ISBM}' id='ISBM${item.ID}'>`;
-                td5.innerHTML = `<select type='text' ${function(){loadAuthorsToSelect()}} class="form-select" value='${item.authors}' id='${item.authors}'>`;
+                td5.innerHTML = `<input type='text' value='${item.authors}' id='ISBM${item.ID}'>`;;
                 
 
                 // Módosítás gomb

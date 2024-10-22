@@ -36,7 +36,7 @@ app.post('/books', (req, res) => {
   }
 
   // Könyv hozzáadása az adatbázishoz
-  pool.query(`INSERT INTO books (cim, kiadas_ev, ISBM, author) VALUES (?, ?, ?, ?)`, 
+  pool.query(`INSERT INTO books (cim, kiadas_ev, ISBM, authors) VALUES (?, ?, ?, ?)`, 
              [req.body.title, req.body.publication_year, req.body.isbn, req.body.authorID], 
              (err, results) => {
       if (err) {
